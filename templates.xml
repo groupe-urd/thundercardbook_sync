@@ -1,0 +1,52 @@
+<openerp>
+    <data>
+        <template id="subscriptions_list">
+			<t t-call="website.layout">
+                <t t-set="title">Thunderbird Cardbook - Odoo newsletters mass subscription</t>
+				
+				<div align="center">
+					<h1>Ignore or Subscribe contacts from <span t-field="user.name" /> Thunderbird cardbook</h1>
+					<form action="/thundercardbook_sync/subscribe_contacts" method="post">
+					
+					<style>
+					table.subscribe_contacts {
+						border-collapse: collapse;
+						width: 100%;
+					}
+
+					th.subscribe_contacts, td.subscribe_contacts {
+						padding: 8px;
+						text-align: left;
+						border-bottom: 1px solid #ddd;
+					}
+					
+					th.subscribe_contacts {
+						text-align: center;
+					}
+
+					tr.subscribe_contacts:hover {background-color:#f5f5f5;}
+					</style>
+					
+					<table class="subscribe_contacts">
+						<thead>
+							<tr>
+								<th class="subscribe_contacts" style="background-color:#d5d5d5;">Email</th>
+								<th class="subscribe_contacts" style="background-color:#d5d5d5;"># of sent mails</th>
+								<th class="subscribe_contacts" style="background-color:#d5d5d5;">Ignore</th>
+							<th t-foreach="mass_mailing_lists" t-as="mailinglist"  class="subscribe_contacts"><t t-esc="mailinglist.name" /></th>
+							</tr>
+						</thead>
+						<tr t-foreach="subscription_ignore_list" t-as="contact"  class="subscribe_contacts">
+							<td  class="subscribe_contacts"><strong><t t-esc="contact.email" /></strong></td>
+							<td  class="subscribe_contacts"><t t-esc="contact.popularity" /></td>
+							<td  class="subscribe_contacts" style="text-align:center"><input type="checkbox" t-att-name="'ignore_%s' % contact.id" t-att-id="'ignore_%s' % contact.id" /></td>
+						<td t-foreach="mass_mailing_lists" t-as="list4contacts" class="subscribe_contacts" style="text-align:center"><input type="checkbox" t-att-name="'subscribe_%s_to_%s' % (contact.id, list4contacts.id)" t-att-id="'subscribe_%s_to_%s' % (contact.id, list4contacts.id)"  /></td>							
+						</tr>
+					</table>
+					<input type="submit" />
+					</form>
+				</div>
+			</t>
+        </template>
+    </data>
+</openerp>
